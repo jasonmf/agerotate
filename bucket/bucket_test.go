@@ -12,7 +12,7 @@ type testObject struct {
 	deleted bool
 }
 
-func (t *testObject) Age(n time.Time) time.Duration {
+func (t *testObject) Age() time.Duration {
 	return t.age
 }
 
@@ -26,7 +26,6 @@ func (t *testObject) ID() string {
 }
 
 func TestCleanup(t *testing.T) {
-	var irrelevantTime time.Time
 	var irrelevantDuration time.Duration
 	deleted := true
 
@@ -94,7 +93,7 @@ func TestCleanup(t *testing.T) {
 			b.Add(objs[i])
 		}
 
-		b.Cleanup(irrelevantTime)
+		b.Cleanup()
 
 		if len(tc.expected) != len(b.objects) {
 			t.Fatalf("Expected %v results, got %v", len(tc.expected), len(b.objects))

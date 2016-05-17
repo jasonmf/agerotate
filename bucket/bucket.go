@@ -12,8 +12,8 @@ type bucket struct {
 	objects []agerotate.Object
 }
 
-func newBucket(r agerotate.Range) bucket {
-	return bucket{
+func newBucket(r agerotate.Range) *bucket {
+	return &bucket{
 		r,
 		[]agerotate.Object{},
 	}
@@ -27,15 +27,15 @@ func (b bucket) Age() time.Duration {
 	return b.Range.Age
 }
 
-func (b *bucket) Cleanup(now time.Time) error {
+func (b *bucket) Cleanup() error {
 	if len(b.objects) < 2 {
 		return nil
 	}
 
-	sort.Sort(agerotate.ObjectsByAge{b.objects, now})
-	baseAge := b.objects[0].Age(now)
+	sort.Sort(agerotate.ObjectsByAge{b.objects})
+	baseAge := b.objects[0].Age()
 	for _, o := range b.objects[1:] {
-		oAge := o.Age(now)
+		oAge := o.Age()
 		if oAge-baseAge < b.Range.Interval {
 			err := o.Delete()
 			if err != nil {

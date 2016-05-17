@@ -1,15 +1,12 @@
 package bucket
 
 import (
-	"time"
-
 	"agerotate"
 )
 
 func Cleanup(sortedRanges []agerotate.Range, objects agerotate.Objects) error {
-	now := time.Now()
 	buckets := makeBuckets(sortedRanges)
-	overflow, err := readObjects(objects, buckets, now)
+	overflow, err := readObjects(objects, buckets)
 	if err != nil {
 		return err
 	}
@@ -33,7 +30,7 @@ func makeBuckets(sortedRanges []agerotate.Range) []*bucket {
 	return buckets
 }
 
-func readObjects(objects agerotate.Objects, buckets []*bucket, now time.Time) ([]agerotate.Object, error) {
+func readObjects(objects agerotate.Objects, buckets []*bucket) ([]agerotate.Object, error) {
 	overflow := []agerotate.Object{}
 	oList, err := objects.List()
 	if err != nil {
@@ -43,7 +40,7 @@ func readObjects(objects agerotate.Objects, buckets []*bucket, now time.Time) ([
 	for _, o := range oList {
 		found := false
 		for _, b := range buckets {
-			if o.Age(now) < b.Age() {
+			if o.Age() < b.Age() {
 				b.Add(o)
 				found = true
 			}
@@ -57,16 +54,16 @@ func readObjects(objects agerotate.Objects, buckets []*bucket, now time.Time) ([
 
 func cleanupBuckets(buckets []*bucket) error {
 	for _, b := range buckets {
-		if err = b.Cleanup(now); err != nil {
+		if err := b.Cleanup(); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func cleanupOverflow(overflow []Object) error {
+func cleanupOverflow(overflow []agerotate.Object) error {
 	for _, o := range overflow {
-		if err = o.Delete(); err != nil {
+		if err := o.Delete(); err != nil {
 			return err
 		}
 	}

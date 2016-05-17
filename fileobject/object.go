@@ -9,7 +9,7 @@ import (
 // File captures a file path and it's mtime, providing methods for the Object interface. The mtime is cached to avoid hammering the filesystem during sorting.
 type File struct {
 	path  string
-	mtime time.Time
+	age	time.Duration
 }
 
 func newFile(path string) (File, error) {
@@ -19,7 +19,7 @@ func newFile(path string) (File, error) {
 	}
 	return File{
 		path:  path,
-		mtime: fi.ModTime(),
+		mtime: time.Now().Sub(fi.ModTime()),
 	}, nil
 }
 
@@ -28,12 +28,9 @@ func (f File) ID() string {
 	return f.path
 }
 
-// Age returns the age from the supplied time of the file object as a time.Duration. If the supplied Time.IsZero(), the current time will be used.
+// Age returns the age of the object as a time.Duration.
 func (f File) Age(now time.Time) time.Duration {
-	if now.IsZero() {
-		now = time.Now()
-	}
-	return now.Sub(f.mtime)
+	return f.age
 }
 
 // Delete attempts to remove the file object. No error is returned if it already doesn't exist.
