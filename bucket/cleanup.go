@@ -43,6 +43,7 @@ func readObjects(objects agerotate.Objects, buckets []*bucket) ([]agerotate.Obje
 			if o.Age() < b.Age() {
 				b.Add(o)
 				found = true
+				break
 			}
 		}
 		if !found {
