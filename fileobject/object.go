@@ -8,8 +8,8 @@ import (
 
 // File captures a file path and it's mtime, providing methods for the Object interface. The mtime is cached to avoid hammering the filesystem during sorting.
 type File struct {
-	path  string
-	age	time.Duration
+	path string
+	age  time.Duration
 }
 
 func newFile(path string) (File, error) {

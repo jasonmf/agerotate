@@ -22,7 +22,7 @@ type Objects interface {
 
 // ObjectsByAge implements sort.Interface to sort Objects by Age, ascending.
 type ObjectsByAge struct {
-	O   []Object
+	O []Object
 }
 
 func (a ObjectsByAge) Len() int           { return len(a.O) }
