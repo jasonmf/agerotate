@@ -13,10 +13,10 @@ const (
 # Some standalone comment, followed by a blank line
 
 path:/path/to/whatever
-range:3600:0        # Keep everything from the last hour
-range:21600:120	    # Keep one every two hours younger than six hours
+range:1h:0s         # Keep everything from the last hour
+range:6h:2h	    # Keep one every two hours younger than six hours
 # range:21655:123  This one is ignored
-RANGE:604800:43200  # Keep one every 12 hours for the last week
+RANGE:168h:12h   # Keep one every 12 hours for the last week
 `
 )
 
@@ -88,24 +88,14 @@ func TestAddRangeErrors(t *testing.T) {
 		}
 	}{
 		{
-			id:          "Non-int age",
-			line:        "RaNGe:1.4:15",
-			expectedErr: "Line 0: Invalid age integer: strconv.ParseInt: parsing \"1.4\": invalid syntax",
-		},
-		{
-			id:          "Non-int interval",
-			line:        "RaNGe:15:0.6",
-			expectedErr: "Line 0: Invalid interval integer: strconv.ParseInt: parsing \"0.6\": invalid syntax",
-		},
-		{
 			id:          "Negative age",
-			line:        "RaNGe:-5:0",
-			expectedErr: "Line 0: Age values must be positive, got -5",
+			line:        "RaNGe:-5s:0s",
+			expectedErr: "Line 0: Age values must be positive, got -5s",
 		},
 		{
 			id:          "Negative interval",
-			line:        "RaNGe:5:-7",
-			expectedErr: "Line 0: Interval values must be positive, got -7",
+			line:        "RaNGe:5s:-7s",
+			expectedErr: "Line 0: Interval values must be positive, got -7s",
 		},
 	} {
 		t.Logf("Testing case %q", tc.id)
@@ -135,7 +125,7 @@ func TestAddRangeErrors(t *testing.T) {
 }
 
 func TestRangeLarger(t *testing.T) {
-	line := "RAnGE:60:15   # Extra fluff"
+	line := "RAnGE:60s:15s   # Extra fluff"
 	p := parser{
 		line:     line,
 		fieldSep: ":",
@@ -162,7 +152,7 @@ func TestFull(t *testing.T) {
 		},
 		agerotate.Range{
 			Age:      21600 * time.Second,
-			Interval: 120 * time.Second,
+			Interval: 2 * time.Hour,
 		},
 		agerotate.Range{
 			Age:      604800 * time.Second,
