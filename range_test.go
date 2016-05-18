@@ -16,13 +16,13 @@ func TestRangeString(t *testing.T) {
 			id:       "3 days @ 12 hours",
 			age:      3 * 24 * time.Hour,
 			interval: 12 * time.Hour,
-			expected: "For files older than 72h0m0s, keep one every 12h0m0s",
+			expected: "For files younger than 72h0m0s, keep one every 12h0m0s",
 		},
 		{
 			id:       "12 hours @ 3 hours",
 			age:      12 * time.Hour,
 			interval: 3 * time.Hour,
-			expected: "For files older than 12h0m0s, keep one every 3h0m0s",
+			expected: "For files younger than 12h0m0s, keep one every 3h0m0s",
 		},
 	} {
 		t.Logf("Testing case %q", tc.id)
