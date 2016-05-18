@@ -1,3 +1,4 @@
+// bucket captures objects below a certain age, decides which ones should be deleted, and deletes them.
 package bucket
 
 import (
@@ -7,6 +8,7 @@ import (
 	"agerotate"
 )
 
+// bucket is a container for Object(s) and is intended to hold those objects younger than the Age of the Range but older than younger buckets.
 type bucket struct {
 	agerotate.Range
 	objects []agerotate.Object
@@ -27,6 +29,7 @@ func (b bucket) Age() time.Duration {
 	return b.Range.Age
 }
 
+// Cleanup sorts the objects in the bucket by Age then deletes objects according to the Interval. The first object in the bucket is always retained. For each object thereafter, if the age of the object is less than the age of the last retained object plus Interval, the newer object is deleted. If the next object is older than the age of the last retained object plus Interval, the newer object is retained and processing continues.
 func (b *bucket) Cleanup() error {
 	if len(b.objects) < 2 {
 		return nil

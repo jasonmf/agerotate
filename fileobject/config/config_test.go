@@ -1,4 +1,4 @@
-package fileconfig
+package config
 
 import (
 	"strings"

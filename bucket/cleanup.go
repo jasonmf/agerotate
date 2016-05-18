@@ -4,6 +4,7 @@ import (
 	"agerotate"
 )
 
+// Cleanup sets up and invokes actual object cleanup.
 func Cleanup(sortedRanges []agerotate.Range, objects agerotate.Objects) error {
 	buckets := makeBuckets(sortedRanges)
 	overflow, err := readObjects(objects, buckets)
@@ -30,6 +31,7 @@ func makeBuckets(sortedRanges []agerotate.Range) []*bucket {
 	return buckets
 }
 
+// readObjects populates buckets by finding the bucket with the smallest age that's larger than the age of the object. If no buckets are larger than the object it's placed in an overflow list and will be deleted.
 func readObjects(objects agerotate.Objects, buckets []*bucket) ([]agerotate.Object, error) {
 	overflow := []agerotate.Object{}
 	oList, err := objects.List()

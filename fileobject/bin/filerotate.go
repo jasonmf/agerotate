@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"agerotate/bucket"
-	"agerotate/fileconfig"
+	"agerotate/fileobject/config"
 )
 
 var (
@@ -27,7 +27,7 @@ func main() {
 		errorExit("Error opening config %q: %v\n", *ConfigPath, err)
 	}
 
-	files, ranges, err := fileconfig.Parse(config, *FieldSep)
+	files, ranges, err := config.Parse(config, *FieldSep)
 	if err != nil {
 		errorExit("Error parsing config %q: %v\n", *ConfigPath, err)
 	}

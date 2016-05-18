@@ -1,4 +1,5 @@
-package fileconfig
+// config parses a config file for rotation of File objects.
+package config
 
 import (
 	"bufio"
@@ -17,6 +18,7 @@ const (
 	RangePrefix = "range"
 )
 
+// Parse reads and parses a config.
 func Parse(in io.Reader, fieldSep string) (fileobject.Files, []agerotate.Range, error) {
 	return newParser(in, fieldSep).parse()
 }
@@ -38,6 +40,7 @@ func newParser(in io.Reader, fieldSep string) *parser {
 	}
 }
 
+// parse manages the parser context and performs some sanity checking on the resulting objects before returning them.
 func (p *parser) parse() (fileobject.Files, []agerotate.Range, error) {
 	for p.in.Scan() {
 		p.line = p.in.Text()
@@ -59,6 +62,7 @@ func (p *parser) parse() (fileobject.Files, []agerotate.Range, error) {
 	return fileobject.Files(p.path), p.ranges, nil
 }
 
+// parseLine parses the line that's just been read in by parse(), invoking handling functions specified to each line type.
 func (p *parser) parseLine() error {
 	p.line = clean(p.line)
 	if p.line == "" {
@@ -119,6 +123,7 @@ func (p *parser) addRange(values []string) error {
 	return nil
 }
 
+// clean performs basic string normalization such as eliminating comments and whitespace.
 func clean(s string) string {
 	idx := strings.Index(s, CommentChar)
 	if idx > -1 {

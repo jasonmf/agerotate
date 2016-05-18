@@ -1,3 +1,4 @@
+// fileobject implements rotation for filesystem objects using os.Stat and os.Remove.
 package fileobject
 
 import (
