@@ -18,8 +18,8 @@ func newFile(path string) (File, error) {
 		return File{}, err
 	}
 	return File{
-		path:  path,
-		mtime: time.Now().Sub(fi.ModTime()),
+		path: path,
+		age:  time.Now().Sub(fi.ModTime()),
 	}, nil
 }
 

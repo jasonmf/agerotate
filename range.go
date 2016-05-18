@@ -13,7 +13,7 @@ type Range struct {
 
 // String profiles a human-readable string for a range.
 func (r Range) String() string {
-	return fmt.Sprintf("For files older than %s, keep one every %s", r.Age, r.Interval)
+	return fmt.Sprintf("For files younger than %s, keep one every %s", r.Age, r.Interval)
 }
 
 // ByAge implements sort.Interface to sort Range objects by Age, ascending.
