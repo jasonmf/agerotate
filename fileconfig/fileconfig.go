@@ -14,7 +14,7 @@ import (
 
 const (
 	CommentChar = "#"
-	PathPrefix  = "path"
+	PathPrefix  = "pathglob"
 	RangePrefix = "range"
 )
 

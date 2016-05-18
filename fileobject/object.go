@@ -4,6 +4,8 @@ import (
 	"os"
 	"path/filepath"
 	"time"
+
+	"agerotate"
 )
 
 // File captures a file path and it's mtime, providing methods for the Object interface. The mtime is cached to avoid hammering the filesystem during sorting.
@@ -29,7 +31,7 @@ func (f File) ID() string {
 }
 
 // Age returns the age of the object as a time.Duration.
-func (f File) Age(now time.Time) time.Duration {
+func (f File) Age() time.Duration {
 	return f.age
 }
 
@@ -51,12 +53,12 @@ func (f Files) ID() string {
 }
 
 // List returns the File items matching the glob.
-func (f Files) List() ([]File, error) {
+func (f Files) List() ([]agerotate.Object, error) {
 	paths, err := filepath.Glob(string(f))
 	if err != nil {
 		return nil, err
 	}
-	fObjs := []File{}
+	fObjs := []agerotate.Object{}
 	for _, path := range paths {
 		nf, err := newFile(path)
 		if err != nil {

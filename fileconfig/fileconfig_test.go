@@ -12,7 +12,7 @@ const (
 	fullInput = `
 # Some standalone comment, followed by a blank line
 
-path:/path/to/whatever
+pathGLOB:/path/to/whatever
 range:3600:0        # Keep everything from the last hour
 range:21600:120	    # Keep one every two hours younger than six hours
 # range:21655:123  This one is ignored
@@ -43,12 +43,12 @@ func TestPareLineErrors(t *testing.T) {
 		},
 		{
 			id:          "Missing path",
-			line:        "PATH:",
+			line:        "PATHGLOB:",
 			expectedErr: "Line 0: Must specify path",
 		},
 		{
 			id:          "Multiple paths",
-			line:        "PaTH:a:b",
+			line:        "PaTHGLOB:a:b",
 			expectedErr: "Line 0: Using multiple path values is invalid",
 		},
 		{
