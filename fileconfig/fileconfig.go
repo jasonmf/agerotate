@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"strconv"
 	"strings"
 	"time"
 
@@ -99,24 +98,24 @@ func (p *parser) addRange(values []string) error {
 	if len(values) != 2 {
 		return fmt.Errorf("Line %d: Range lines must have two values", p.lineNo)
 	}
-	age, err := strconv.Atoi(values[0])
+	age, err := time.ParseDuration(values[0])
 	if err != nil {
-		return fmt.Errorf("Line %d: Invalid age integer: %v", p.lineNo, err.Error())
+		return fmt.Errorf("Line %d: Invalid age: %v", p.lineNo, err.Error())
 	}
-	interval, err := strconv.Atoi(values[1])
+	interval, err := time.ParseDuration(values[1])
 	if err != nil {
-		return fmt.Errorf("Line %d: Invalid interval integer: %v", p.lineNo, err.Error())
+		return fmt.Errorf("Line %d: Invalid interval: %v", p.lineNo, err.Error())
 	}
 	if age < 0 {
-		return fmt.Errorf("Line %d: Age values must be positive, got %d", p.lineNo, age)
+		return fmt.Errorf("Line %d: Age values must be positive, got %v", p.lineNo, age)
 	}
 	if interval < 0 {
-		return fmt.Errorf("Line %d: Interval values must be positive, got %d", p.lineNo, interval)
+		return fmt.Errorf("Line %d: Interval values must be positive, got %v", p.lineNo, interval)
 	}
-	if len(p.ranges) > 0 && p.ranges[len(p.ranges)-1].Age >= time.Duration(age)*time.Second {
+	if len(p.ranges) > 0 && p.ranges[len(p.ranges)-1].Age >= age {
 		return fmt.Errorf("Line %d: Age value must be larger than previous age value", p.lineNo)
 	}
-	p.ranges = append(p.ranges, agerotate.Range{Age: time.Duration(age) * time.Second, Interval: time.Duration(interval) * time.Second})
+	p.ranges = append(p.ranges, agerotate.Range{Age: age, Interval: interval})
 	return nil
 }
 
