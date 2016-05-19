@@ -16,7 +16,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"agerotate"
+	"github.com/AgentZombie/agerotate"
 )
 
 // File captures a file path and it's mtime, providing methods for the Object interface. The mtime is cached to avoid hammering the filesystem during sorting.

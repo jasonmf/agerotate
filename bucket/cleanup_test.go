@@ -14,7 +14,7 @@ import (
 	"testing"
 	"time"
 
-	"agerotate"
+	"github.com/AgentZombie/agerotate"
 )
 
 type testBucketObject struct {

@@ -15,7 +15,7 @@ import (
 	"sort"
 	"time"
 
-	"agerotate"
+	"github.com/AgentZombie/agerotate"
 )
 
 // bucket is a container for Object(s) and is intended to hold those objects younger than the Age of the Range but older than younger buckets.

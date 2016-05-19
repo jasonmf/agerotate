@@ -18,8 +18,8 @@ import (
 	"strings"
 	"time"
 
-	"agerotate"
-	"agerotate/fileobject"
+	"github.com/AgentZombie/agerotate"
+	"github.com/AgentZombie/agerotate/fileobject"
 )
 
 const (

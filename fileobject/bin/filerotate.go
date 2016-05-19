@@ -15,8 +15,8 @@ import (
 	"fmt"
 	"os"
 
-	"agerotate/bucket"
-	"agerotate/fileobject/config"
+	"github.com/AgentZombie/agerotate/bucket"
+	"github.com/AgentZombie/agerotate/fileobject/config"
 )
 
 var (

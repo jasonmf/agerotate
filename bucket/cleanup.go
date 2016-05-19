@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 package bucket
 
 import (
-	"agerotate"
+	"github.com/AgentZombie/agerotate"
 )
 
 // Cleanup sets up and invokes actual object cleanup.
